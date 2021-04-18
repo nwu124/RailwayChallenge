@@ -1,3 +1,4 @@
+package application;
 
 public class TripCalculator {
 	public TripCalculator() {
