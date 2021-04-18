@@ -37,7 +37,7 @@ route will never appear more than once for a particular trip, the starting and e
 city will not be the same city.
 
 Output:
-For values ​​from 1 to 5, if there is no such route, show something like "NO SUCH ROUTE". 
+For values from 1 to 5, if there is no such route, show something like "NO SUCH ROUTE". 
 Otherwise, follow the indicated route and do not make any extra stops! For example, the 
 value 1 to 5 means that the trip will start in city A, then the trip will continue 
 directly to city B (at a distance of 5), then directly to city C (at a distance of 4).
