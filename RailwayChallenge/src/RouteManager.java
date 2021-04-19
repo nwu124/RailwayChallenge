@@ -66,6 +66,7 @@ public class RouteManager {
 	private void readFile() {
 		// assumes that cities only use one character in capitals 
 		// assumes that distances are less than int max and nonnegative
+		// true if successful, false if failure
 		File file = new File(filename);
 		try {
 			Scanner scan = new Scanner(file);
@@ -75,10 +76,11 @@ public class RouteManager {
 			}
 			scan.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println("Failed to read from file");
 		}
 	}
 	// write existing routes to file
+	// true if successful, false if failure
 	private void writeFile() {
 		try 
 		{
@@ -93,10 +95,8 @@ public class RouteManager {
 				}
 			}
 			output.close();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Failed to write to file");
 		}
 	}
 	// assumes only one character in capitals
@@ -120,11 +120,16 @@ public class RouteManager {
 		return true;
 	}
 	
+	// temporarily used for debugging
 	public static void main(String[]args) {
 		RouteManager test = new RouteManager();
 		test.readFile();
+		
 		test.addRoute("Y", "Y", 15);
 		test.printRoutes();
+		test.removeRoute("Y", "Y");
+		test.printRoutes();
+		
 		test.writeFile();
 	}
 }

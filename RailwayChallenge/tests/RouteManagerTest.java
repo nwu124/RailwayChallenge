@@ -1,5 +1,4 @@
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 class RouteManagerTest {
@@ -53,16 +52,28 @@ class RouteManagerTest {
 		assertEquals("Invalid input", test.addRoute("A", "B", 0));
 	}
 	@Test
-	void addRoute_validInput_routeAddedMessage() {
+	void addRoute_validInputAA_routeAddedMessage() {
 		RouteManager test = new RouteManager("tests.txt");
-		assertEquals("Route added", test.addRoute("A", "B", 1));
+		assertEquals("Route added", test.addRoute("A", "A", 1));
 	}
 	@Test
-	void addRoute_validInput_routeExists() {
+	void addRoute_validInputZZ_routeAddedMessage() {
 		RouteManager test = new RouteManager("tests.txt");
-		test.addRoute("A", "B", 1);
+		assertEquals("Route added", test.addRoute("Z", "Z", 1));
+	}
+	@Test
+	void addRoute_validInputAA_routeExists() {
+		RouteManager test = new RouteManager("tests.txt");
+		test.addRoute("A", "A", 1);
 		int [][] temporary = test.getRoutes();
-		assertEquals(temporary[1][2], 1);
+		assertEquals(temporary[1][1], 1);
+	}
+	@Test
+	void addRoute_validInputZZ_routeExists() {
+		RouteManager test = new RouteManager("tests.txt");
+		test.addRoute("Z", "Z", 1);
+		int [][] temporary = test.getRoutes();
+		assertEquals(temporary[26][26], 1);
 	}
 	
 	// testing removeRoute
