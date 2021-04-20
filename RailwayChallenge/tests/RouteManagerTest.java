@@ -124,6 +124,6 @@ class RouteManagerTest {
 		test.addRoute("A", "B", 1);
 		test.removeRoute("A", "B");
 		int [][] temporary = test.getRoutes();
-		assertEquals(temporary[1][2], 0);
+		assertEquals(temporary[1][2], -1);
 	}
 }

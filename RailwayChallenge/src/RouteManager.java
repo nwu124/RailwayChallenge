@@ -18,6 +18,11 @@ public class RouteManager {
 		// A will be row/col 1, B will be 2, C will be 3, etc.
 		// Row/col 0 is unused purely for convenience
 		routes = new int [27][27];
+		for (int i = 0; i < routes.length; i++) {
+			for (int j = 0; j < routes[0].length; j++) {
+				routes[i][j] = -1;
+			}
+		}
 		readFile();
 	}
 	public RouteManager() {
@@ -39,11 +44,11 @@ public class RouteManager {
 	}
 	public String removeRoute(String start, String finish) {
 		if (validateInput(start, finish, 1)) {
-			if (routes[convertString(start)][convertString(finish)] == 0) {
+			if (routes[convertString(start)][convertString(finish)] == -1) {
 				return "No such route found";
 			}
 			else {
-				routes[convertString(start)][convertString(finish)] = 0;
+				routes[convertString(start)][convertString(finish)] = -1;
 				return "Route removed";
 			}
 		}
