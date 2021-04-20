@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TripCalculator {
@@ -81,12 +82,71 @@ public class TripCalculator {
 	}
 	private int output6() {
 		// calculate CC with max 3 stops
+		int counter = 0;
 		
-		return 0;
+		// can we go back to C? 
+		// one stop
+		if (routes[3][3] > 0) {
+			counter++;
+		}
+		// search all routes leading away from C
+		for (int i = 0; i < routes.length; i++) {
+			// potential stops
+			if (routes[3][i] > 0) {
+				// can we go back to C? 
+				// two stops
+				if (routes[i][3] > 0) {
+					counter++;
+				}
+				
+				// search all routes leading away from the first stop
+				for (int j = 0; j < routes.length; j++) {
+					// potential stops
+					if (routes[i][j] > 0) {
+						// can we go back to C? 
+						// three stops
+						if (routes[j][3] > 0) {
+							counter++;
+						}
+					}
+					
+				}
+			}
+		}
+		return counter;
 	}
 	private int output7() {
-		// calculate AC with 4 stops
-		return 0;
+		// calculate AC with exactly 4 stops
+		int counter = 0;
+		
+		// search all routes leading away from A
+		// one stop
+		for (int i = 0; i < routes.length; i++) {
+			// potential stops
+			if (routes[1][i] > 0) {
+				// search all routes leading away from the first stop
+				// two stops
+				for (int j = 0; j < routes.length; j++) {
+					// potential stops
+					if (routes[i][j] > 0) {
+						// search all routes leading away from the second stop
+						// three stops
+						for (int k = 0; k < routes.length; k++) {
+							// potential stops
+							if (routes[j][k] > 0) {
+								// can we can go back to C? 
+								// four stops
+								if (routes[k][3] > 0) {
+									counter++;
+								}
+							}
+						}
+					}
+					
+				}
+			}
+		}
+		return counter;
 	}
 	private int output8() {
 		// calculate lowest AC
@@ -100,6 +160,13 @@ public class TripCalculator {
 		// calculate number of CC <30
 		return 0;
 	}
+	private ArrayList<Integer> getRoutes(int start, int finish) {
+		ArrayList<Integer> possibilities = new ArrayList<>();
+		
+		
+		return possibilities;
+	}
+	
 	private boolean validateRoutes(int [][] routes) {
 		if (routes == null) {
 			return false;
@@ -116,6 +183,7 @@ public class TripCalculator {
 		}
 		return true;
 	}
+	// temporary debugging use
 	public static void main(String[]args) {
 		RouteManager manager = new RouteManager();
 		int [][] routes = manager.getRoutes();
