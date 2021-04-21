@@ -124,17 +124,4 @@ public class RouteManager {
 		}
 		return true;
 	}
-	
-	// temporarily used for debugging
-	public static void main(String[]args) {
-		RouteManager test = new RouteManager();
-		test.readFile();
-		
-		test.addRoute("Y", "Y", 15);
-		test.printRoutes();
-		test.removeRoute("Y", "Y");
-		test.printRoutes();
-		
-		test.writeFile();
-	}
 }
