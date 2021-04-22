@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class RouteManager {
 	// adjacency matrix for storing edges between vertices
 	private int [][] routes;
-	private final String filename;
+	private String filename;
 	
 	public RouteManager(String filename) {
 		this.filename = filename;
@@ -44,7 +43,7 @@ public class RouteManager {
 		}
 	}
 	public String removeRoute(String start, String finish) {
-		if (validateInput(start, finish, 1)) {
+		if (validateInput(start, finish)) {
 			if (routes[convertString(start)][convertString(finish)] == -1) {
 				return "No such route found";
 			}
@@ -61,16 +60,9 @@ public class RouteManager {
 	public int [][] getRoutes() {
 		return routes;
 	}
-	// for debugging
-	public void printRoutes() {
-		for (int i = 0; i < routes.length; i++) {
-			System.out.println(Arrays.toString(routes[i]));
-		}
-		
-	}
 	
 	// private methods
-	private void readFile() {
+	private String readFile() {
 		// assumes that cities only use one character in capitals 
 		// assumes that distances are less than int max and nonnegative
 		File file = new File(filename);
@@ -81,12 +73,15 @@ public class RouteManager {
 				routes[data.charAt(0) - 64][data.charAt(1) - 64] = Integer.parseInt(data.substring(2));
 			}
 			scan.close();
+			return "Routes imported successfully";
 		} catch (FileNotFoundException e) {
-			System.out.println("Failed to read from file");
+			filename = "routes.txt";
+			readFile();
+			return "Failed to read from file, the default filename will be used instead";
 		}
 	}
 	// write existing routes to file
-	private void writeFile() {
+	private String writeFile() {
 		try 
 		{
 			FileWriter output = new FileWriter(filename);
@@ -100,8 +95,9 @@ public class RouteManager {
 				}
 			}
 			output.close();
+			return "Routes updated successfully";
 		} catch (IOException e) {
-			System.out.println("Failed to write to file");
+			return "Failed to write to file";
 		}
 	}
 	// assumes only one character in capitals
@@ -123,5 +119,8 @@ public class RouteManager {
 			return false;
 		}
 		return true;
+	}
+	private boolean validateInput(String start, String finish) {
+		return validateInput(start, finish, 1);
 	}
 }
