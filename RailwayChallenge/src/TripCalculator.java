@@ -1,8 +1,8 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TripCalculator {
 	private int [][] routes;
+	private int recursiveCounter;
 	
 	public TripCalculator(int [][] routes) {
 		if (validateRoutes(routes)) {
@@ -23,21 +23,21 @@ public class TripCalculator {
 	public int [] getOutput() {
 		// calculate all outputs
 		int [] results = new int [10];
-		results[0] = threeStops(1, 2, 3);						// calculate ABC
-		results[1] = twoStops(1, 4);							// calculate AD
-		results[2] = threeStops(1, 4, 3);						// calculate ADC
-		results[3] = threeStops(1, 5, 2) + threeStops(2, 3, 4);	// calculate AEBCD
-		results[4] = threeStops(1, 5, 4);						// calculate AED
-		results[5] = threeStopCycles(3);						// calculate CC with max 3 stops
-		results[6] = tripsWithFourStops(1, 3);					// calculate AC with exactly 4 stops
-		results[7] = shortestPath(1, 3);// calculate lowest AC
-		results[8] = shortestPath(2, 2);// calculate lowest BB
-		// results[9] = output9();// calculate number of CC <30
+		results[0] = threeStops(1, 2, 3);		// calculate ABC
+		results[1] = twoStops(1, 4);			// calculate AD
+		results[2] = threeStops(1, 4, 3);		// calculate ADC
+		results[3] = threeStops(1, 5, 2) + 		// calculate AEBCD
+				threeStops(2, 3, 4);	
+		results[4] = threeStops(1, 5, 4);		// calculate AED
+		results[5] = threeStopCycles(3);		// calculate CC with max 3 stops
+		results[6] = tripsWithFourStops(1, 3);	// calculate AC with exactly 4 stops
+		results[7] = shortestPath(1, 3);		// calculate lowest AC
+		results[8] = shortestPath(2, 2);		// calculate lowest BB
+		results[9] = cyclesWithLimit(3, 30);	// calculate number of CC <30
 		return results;
 	}
 	
 	// private methods
-	// -1 means not possible
 	private int twoStops(int start, int finish) {
 		if (routes[start][finish] == -1) {
 			return -1;
@@ -103,7 +103,7 @@ public class TripCalculator {
 		}
 		return counter;
 	}
-    public int shortestPath(int start, int finish){
+    private int shortestPath(int start, int finish){
         int [] distances = new int[routes.length];
         boolean [] visitedNodes = new boolean[routes.length];
         // initialize distances to Integer.MAX_VALUE and the start node to 0
@@ -157,6 +157,25 @@ public class TripCalculator {
         	}
         	return minimum;
         }
+    }
+    private int cyclesWithLimit(int start, int limit) {
+    	// counter increments to 0 for the initial start
+    	recursiveCounter = -1;
+    	recursiveCycles(start, start, 0, limit);
+    	return recursiveCounter;
+    }
+    private void recursiveCycles(int start, int current, int distance, int limit) {
+    	if (distance >= limit) {
+    		return;
+    	}
+    	if (current == start) {
+    		recursiveCounter++;
+    	}
+    	for (int i = 1; i < routes.length; i++) {
+    		if (routes[current][i] > -1) {
+    			recursiveCycles(start, i, distance + routes[current][i], limit);
+    		}
+    	}
     }
 	private boolean validateRoutes(int [][] routes) {
 		if (routes == null) {
