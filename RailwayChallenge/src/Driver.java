@@ -1,6 +1,12 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Driver is responsible for providing a basic command line interface for interacting with
+ * TripCalculator and RouteManager 
+ * @author Nathaniel Wu
+ * @version 1.0
+ */
 public class Driver {
 	public static void main(String [] args) {
 		// Scanner for user input
@@ -46,7 +52,15 @@ public class Driver {
 						int [][] routes = manager.getRoutes();
 						TripCalculator calculator = new TripCalculator(routes);
 						int [] results = calculator.getOutput();
-						System.out.println(Arrays.toString(results));
+						for (int i = 0; i < results.length; i++) {
+							System.out.print("Output " + (i + 1) + ": ");
+							if (results[i] < 0) {
+								System.out.print("No such route\n");
+							}
+							else {
+								System.out.print(results[i] + "\n");
+							}
+						}
 						break;
 					case 2:
 						// add route

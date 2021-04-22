@@ -52,28 +52,38 @@ class RouteManagerTest {
 		assertEquals("Invalid input", test.addRoute("A", "B", 0));
 	}
 	@Test
-	void addRoute_validInputAA_routeAddedMessage() {
+	void addRoute_failureMessage_invalidInputAA() {
 		RouteManager test = new RouteManager("tests.txt");
-		assertEquals("Route added", test.addRoute("A", "A", 1));
+		assertEquals("Invalid input", test.addRoute("A", "A", 1));
 	}
 	@Test
-	void addRoute_validInputZZ_routeAddedMessage() {
+	void addRoute_failureMessage_invalidInputZZ() {
 		RouteManager test = new RouteManager("tests.txt");
-		assertEquals("Route added", test.addRoute("Z", "Z", 1));
+		assertEquals("Invalid input", test.addRoute("Z", "Z", 1));
 	}
 	@Test
-	void addRoute_validInputAA_routeExists() {
+	void addRoute_routeAddedMessage_validInputAB() {
 		RouteManager test = new RouteManager("tests.txt");
-		test.addRoute("A", "A", 1);
+		assertEquals("Route added. File updated successfully", test.addRoute("A", "B", 1));
+	}
+	@Test
+	void addRoute_routeAddedMessage_validInputYZ() {
+		RouteManager test = new RouteManager("tests.txt");
+		assertEquals("Route added. File updated successfully", test.addRoute("Y", "Z", 1));
+	}
+	@Test
+	void addRoute_routeExists_validInputAB() {
+		RouteManager test = new RouteManager("tests.txt");
+		test.addRoute("A", "B", 1);
 		int [][] temporary = test.getRoutes();
-		assertEquals(temporary[1][1], 1);
+		assertEquals(temporary[1][2], 1);
 	}
 	@Test
-	void addRoute_validInputZZ_routeExists() {
+	void addRoute_routeExists_validInputYZ() {
 		RouteManager test = new RouteManager("tests.txt");
-		test.addRoute("Z", "Z", 1);
+		test.addRoute("Y", "Z", 1);
 		int [][] temporary = test.getRoutes();
-		assertEquals(temporary[26][26], 1);
+		assertEquals(temporary[25][26], 1);
 	}
 	
 	// testing removeRoute
@@ -116,7 +126,7 @@ class RouteManagerTest {
 	void removeRoute_validInput_routeRemovedMessage() {
 		RouteManager test = new RouteManager("tests.txt");
 		test.addRoute("A", "B", 1);
-		assertEquals("Route removed", test.removeRoute("A", "B"));
+		assertEquals("Route removed. File updated successfully", test.removeRoute("A", "B"));
 	}
 	@Test
 	void removeRoute_validInput_routeDoesNotExist() {

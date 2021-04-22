@@ -1,16 +1,24 @@
-import java.util.Arrays;
-
+/**
+ * TripCalculator is responsible for calculating route information using the
+ * supplied adjacency matrix
+ * @author Nathaniel Wu
+ * @version 1.0
+ */
 public class TripCalculator {
 	private int [][] routes;
 	private int recursiveCounter;
 	
+	/**
+	 * Constructor that validates the adjacency matrix provided 
+	 * @param routes		adjacency matrix
+	 */
 	public TripCalculator(int [][] routes) {
 		if (validateRoutes(routes)) {
 			this.routes = routes;
 		}
 		else {
 			System.out.println("Invalid route input");
-			// create empty routes [][] initialized to -1
+			// create empty routes [][] initialized to -1 to represent no edges
 			routes = new int [27][27];
 			for (int i = 0; i < routes.length; i++) {
 				for (int j = 0; j < routes[0].length; j++) {
@@ -19,7 +27,11 @@ public class TripCalculator {
 			}
 		}
 	}
-	// public methods
+	
+	/**
+	 * Calculates the route information supplied in the requirements
+	 * @return		array of int results
+	 */
 	public int [] getOutput() {
 		// calculate all outputs
 		int [] results = new int [10];
@@ -37,7 +49,12 @@ public class TripCalculator {
 		return results;
 	}
 	
-	// private methods
+	/**
+	 * Finds the edge between two vertices if it exists
+	 * @param start		starting vertex
+	 * @param finish	finishing vertex
+	 * @return			edge distance if possible, otherwise -1
+	 */
 	private int twoStops(int start, int finish) {
 		if (routes[start][finish] == -1) {
 			return -1;
@@ -46,6 +63,14 @@ public class TripCalculator {
 			return routes[start][finish];
 		}
 	}
+	
+	/**
+	 * Finds the total edge distance between three vertices if it exists
+	 * @param start		starting vertex
+	 * @param middle	middle vertex
+	 * @param finish	finishing vertex
+	 * @return			edge distance if possible, otherwise -1
+	 */
 	private int threeStops(int start, int middle, int finish) {
 		if (routes[start][middle] == -1 || routes[middle][finish] == -1) {
 			return -1;
@@ -54,23 +79,24 @@ public class TripCalculator {
 			return routes[start][middle] + routes[middle][finish];
 		}
 	}
+	
+	/**
+	 * Calculates the number of cyclic trips from the starting vertex with <3 stops
+	 * @param start		starting vertex
+	 * @return			number of <3 stop cyclic trips
+	 */
 	private int threeStopCycles(int start) {
 		int counter = 0;
-		// first stop, can we go back to the start? 
-		if (routes[start][start] >= 0) {
-			counter++;
-		}
-		// search all routes leading away from start
+		// first vertex
 		for (int i = 0; i < routes.length; i++) {
 			if (routes[start][i] >= 0) {
-				// two stops, can we go back to the start? 
+				// second vertex
 				if (routes[i][start] >= 0) {
 					counter++;
 				}
-				// search all routes leading away from the first stop
 				for (int j = 0; j < routes.length; j++) {
 					if (routes[i][j] >= 0) {
-						// three stops, can we go back to the start? 
+						// third vertex
 						if (routes[j][start] >= 0) {
 							counter++;
 						}
@@ -80,18 +106,26 @@ public class TripCalculator {
 		}
 		return counter;
 	}
+	
+	/**
+	 * Calculate the number of trips from the starting vertex to the finishing vertex
+	 * with exactly 4 stops
+	 * @param start		starting vertex
+	 * @param finish	finishing vertex
+	 * @return			number of 4 stop trips
+	 */
 	private int tripsWithFourStops(int start, int finish) {
 		int counter = 0;
-		// first stop
+		// first vertex
 		for (int i = 0; i < routes.length; i++) {
 			if (routes[1][i] >= 0) {
-				// second stop
+				// second vertex
 				for (int j = 0; j < routes.length; j++) {
 					if (routes[i][j] >= 0) {
-						// third stop
+						// third vertex
 						for (int k = 0; k < routes.length; k++) {
 							if (routes[j][k] >= 0) {
-								// fourth stop, are we at the finish? 
+								// fourth vertex
 								if (routes[k][3] >= 0) {
 									counter++;
 								}
@@ -103,48 +137,62 @@ public class TripCalculator {
 		}
 		return counter;
 	}
+	
+	/**
+	 * Calculates the shortest path from the starting vertex to the finishing vertex
+	 * using Dijkstra's algorithm. An additional leg is tagged on if searching for a
+	 * cyclic trip
+	 * @param start		starting vertex
+	 * @param finish	finishing vertex
+	 * @return			shortest trip if possible, otherwise -1
+	 */
     private int shortestPath(int start, int finish){
         int [] distances = new int[routes.length];
-        boolean [] visitedNodes = new boolean[routes.length];
-        // initialize distances to Integer.MAX_VALUE and the start node to 0
+        boolean [] visited = new boolean[routes.length];
+        // initialize distances to Integer.MAX_VALUE and the start vertex to 0
         for (int i = 0; i < routes.length ; i++) {
             distances[i] = Integer.MAX_VALUE;
         }
         distances[start] = 0;
 
         for (int i = 1; i < routes.length; i++) {
-            // get the closest node
+            // get the closest vertex
             int minimum = Integer.MAX_VALUE;
-            int closestNode = -1;
+            int closestVertex = -1;
             for (int j = 1; j < routes.length; j++) {
-                if (visitedNodes[j] == false && minimum > distances[j]) {
+                if (visited[j] == false && minimum > distances[j]) {
                     minimum = distances[j];
-                    closestNode = j;
+                    closestVertex = j;
                 }
             }
-            // update the visitedNodes if valid
-            if (closestNode == -1) {
+            // update the visited vertices if valid
+            if (closestVertex == -1) {
             	break;
             }
             else {
-            	visitedNodes[closestNode] = true;
+            	visited[closestVertex] = true;
             }
 
-            // search adjacent nodes and update distances if needed
+            // search adjacent vertices and update distances if needed
             for (int j = 1; j < routes.length; j++) {
-                if (routes[closestNode][j] > -1 && visitedNodes[j] == false && 
-                		routes[closestNode][j] != Integer.MAX_VALUE) {
-                	if (routes[closestNode][j] + distances[closestNode] < distances[j]) {
-                		distances[j] = routes[closestNode][j] + distances[closestNode];
+                if (routes[closestVertex][j] > -1 && visited[j] == false && 
+                		routes[closestVertex][j] != Integer.MAX_VALUE) {
+                	if (routes[closestVertex][j] + distances[closestVertex] < distances[j]) {
+                		distances[j] = routes[closestVertex][j] + distances[closestVertex];
                 	}    
                 }
             }
         }
         // return one-way trips
         if (start != finish) {
-        	return distances[finish];
+        	if (distances[finish] == Integer.MAX_VALUE) {
+        		return -1;
+        	}
+        	else {
+        		return distances[finish];
+        	}
         }
-        // add additional leg back to start and then return cycles
+        // add additional leg back to the starting vertex and then return the cyclic trip
         else {
         	int minimum = Integer.MAX_VALUE;
         	for (int i = 1; i < routes.length; i++) {
@@ -155,15 +203,36 @@ public class TripCalculator {
         			}
         		}
         	}
-        	return minimum;
+        	if (minimum == Integer.MAX_VALUE) {
+        		return -1;
+        	}
+        	else {
+        		return minimum;
+        	}
         }
     }
+    
+    /**
+     * Recursively calculate the number of unique cyclic trips for a certain vertex
+     * that is less than a particular distance
+     * @param start		starting vertex
+     * @param limit		maximum trip distance
+     * @return			number of valid cyclic trips
+     */
     private int cyclesWithLimit(int start, int limit) {
     	// counter increments to 0 for the initial start
     	recursiveCounter = -1;
     	recursiveCycles(start, start, 0, limit);
     	return recursiveCounter;
     }
+    
+    /**
+     * Recursive helper method for calculating the number of unique cyclic trips
+     * @param start			starting vertex
+     * @param current		current vertex
+     * @param distance		current trip distance
+     * @param limit			maximum trip distance
+     */
     private void recursiveCycles(int start, int current, int distance, int limit) {
     	if (distance >= limit) {
     		return;
@@ -177,6 +246,12 @@ public class TripCalculator {
     		}
     	}
     }
+    
+    /**
+     * Validate adjacency matrix containing route information
+     * @param routes		adjacency matrix to validate
+     * @return				true if valid, false if invalid
+     */
 	private boolean validateRoutes(int [][] routes) {
 		if (routes == null) {
 			return false;
@@ -189,16 +264,12 @@ public class TripCalculator {
 				if (routes[i][j] < -1) {
 					return false;
 				}
+				// no cyclic routes
+				if (i == j && routes[i][j] != -1) {
+					return false;
+				}
 			}
 		}
 		return true;
-	}
-	// temporary debugging use
-	public static void main(String[]args) {
-		RouteManager manager = new RouteManager();
-		int [][] routes = manager.getRoutes();
-		
-		TripCalculator test = new TripCalculator(routes);
-		System.out.println(Arrays.toString(test.getOutput()));
 	}
 }
