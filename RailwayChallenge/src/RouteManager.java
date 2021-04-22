@@ -36,6 +36,7 @@ public class RouteManager {
 	public String addRoute(String start, String finish, int distance) {
 		if (validateInput(start, finish, distance)) {
 			routes[convertString(start)][convertString(finish)] = distance;
+			writeFile();
 			return "Route added";
 		}
 		else {
@@ -49,6 +50,7 @@ public class RouteManager {
 			}
 			else {
 				routes[convertString(start)][convertString(finish)] = -1;
+				writeFile();
 				return "Route removed";
 			}
 		}
@@ -71,7 +73,6 @@ public class RouteManager {
 	private void readFile() {
 		// assumes that cities only use one character in capitals 
 		// assumes that distances are less than int max and nonnegative
-		// true if successful, false if failure
 		File file = new File(filename);
 		try {
 			Scanner scan = new Scanner(file);
@@ -85,7 +86,6 @@ public class RouteManager {
 		}
 	}
 	// write existing routes to file
-	// true if successful, false if failure
 	private void writeFile() {
 		try 
 		{
