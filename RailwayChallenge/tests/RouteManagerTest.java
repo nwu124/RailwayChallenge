@@ -136,6 +136,8 @@ class RouteManagerTest {
 		int [][] temporary = test.getRoutes();
 		assertEquals(temporary[1][2], -1);
 	}
+	
+	// testing getRoutes
 	@Test
 	void getRoutes_returns_notNull() {
 		RouteManager test = new RouteManager("tests.txt");

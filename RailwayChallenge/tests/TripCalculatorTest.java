@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class TripCalculatorTest {
-
+	// testing getOutput
 	@Test
 	void getOutput_routes_txt_expectedResults() {
 		RouteManager test = new RouteManager("routes.txt");
