@@ -3,10 +3,8 @@
 Includes a RouteManager class for managing railway routes and a separate 
 TripCalculator class for determining the route information for the current
 set of routes. The specific output is tailored for the original requirements
-specified at:
-https://docs.google.com/document/d/1MTGDcV4DNqCgXtzx-AqJGhPT2qwWfrqV4Qkc2kHjRNQ/edit
-but can be easily altered within the TripCalculator class. The included driver 
-provides a basic command line interface for interacting with both classes at once.
+specified, but can be easily altered within the TripCalculator class. The included 
+driver provides a basic command line interface for interacting with both classes at once.
 
 ## Installation
 ***
