@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -54,7 +53,7 @@ public class Driver {
 						int [] results = calculator.getOutput();
 						for (int i = 0; i < results.length; i++) {
 							System.out.print("Output " + (i + 1) + ": ");
-							if (results[i] < 0) {
+							if (results[i] == -1) {
 								System.out.print("No such route\n");
 							}
 							else {

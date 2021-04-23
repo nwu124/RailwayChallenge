@@ -38,8 +38,7 @@ public class TripCalculator {
 		results[0] = threeStops(1, 2, 3);		// calculate ABC
 		results[1] = twoStops(1, 4);			// calculate AD
 		results[2] = threeStops(1, 4, 3);		// calculate ADC
-		results[3] = threeStops(1, 5, 2) + 		// calculate AEBCD
-				threeStops(2, 3, 4);	
+		results[3] = threeStops(1, 5, 2, 3, 4); // calculate AEBCD
 		results[4] = threeStops(1, 5, 4);		// calculate AED
 		results[5] = threeStopCycles(3);		// calculate CC with max 3 stops
 		results[6] = tripsWithFourStops(1, 3);	// calculate AC with exactly 4 stops
@@ -77,6 +76,26 @@ public class TripCalculator {
 		}
 		else {
 			return routes[start][middle] + routes[middle][finish];
+		}
+	}
+	
+	/**
+	 * Finds the total edge distance between five vertices if it exists
+	 * @param first		first vertex
+	 * @param second	second vertex
+	 * @param third		third vertex
+	 * @param fourth	fourth vertex
+	 * @param fifth		fifth vertex
+	 * @return			edge distance if possible, otherwise -1
+	 */
+	private int threeStops(int first, int second, int third, int fourth, int fifth) {
+		if (routes[first][second] == -1 || routes[second][third] == -1 || 
+				routes[third][fourth] == -1 || routes[fourth][fifth] == -1) {
+			return -1;
+		}
+		else {
+			return routes[first][second] + routes[second][third] + 
+					routes[third][fourth] + routes[fourth][fifth];
 		}
 	}
 	

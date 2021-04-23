@@ -1,0 +1,6 @@
+AB1
+BC2
+CD3
+DB2
+DE4
+EA2
